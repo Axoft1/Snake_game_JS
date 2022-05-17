@@ -1,0 +1,14 @@
+*{
+    margin: 0;
+    padding: 0;
+    background: #2e353d;
+}
+.menuButton{
+    width: 150px;
+    padding: 15px;
+    margin: 10px;
+    color: white;
+    background: #007b32;
+    text-align: center;
+    cursor: pointer;
+}
