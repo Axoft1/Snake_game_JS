@@ -1,7 +1,7 @@
 *{
     margin: 0;
     padding: 0;
-    background: #2e353d;
+    background: #3d4e61;
 }
 .menuButton{
     width: 150px;
@@ -11,6 +11,7 @@
     background: #007b32;
     text-align: center;
     cursor: pointer;
+    border-radius: 20%;
 }
 .menuButton:hover{
     background: #009641;
@@ -18,6 +19,7 @@
 #game{
     border-collapse: collapse;
     margin: 2% auto 0;
+
 }
 #menu{
     display: flex;
@@ -26,14 +28,15 @@
 td.cell{
     width: 20px;
     height: 20px;
-    border: 1px dotted #eee;
+    border: 1px dotted rgb(255, 254, 254);
     border-collapse: collapse;
+    border-radius: 30%;
 }
 .food{
     background: #00d021;
 }
 .snakeBody{
-    background: #e5e5e5;
+    background: #c27373;
 }
 .snakeHead{
     background: #9b0013;
