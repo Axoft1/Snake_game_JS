@@ -178,7 +178,107 @@ const map = {
  * @property {int} maxX Максимальная позиция змейки на карте по оси X.
  * @property {int} maxY Максимальная позиция змейки на карте по оси Y.
  */
- const snake = {}
+ const snake = {
+    body: null,
+    direction: null,
+    lastStepDirection: null,
+    maxX: null,
+    maxY: null,
+  
+    /**
+     * Инициализирует змейку, откуда она будет начинать и ее направление.
+     * @param {{x: int, y: int}[]} startBody Начальная позиция змейки.
+     * @param {string} direction Начальное направление игрока.
+     * @param {int} maxX Максимальная позиция змейки по оси X.
+     * @param {int} maxY Максимальная позиция змейки по оси Y.
+     */
+    init(startBody, direction, maxX, maxY) {
+      this.body = startBody;
+      this.direction = direction;
+      this.lastStepDirection = direction;
+      this.maxX = maxX;
+      this.maxY = maxY;
+    },
+  
+    /**
+     * Отдает массив со всеми точками змейки.
+     * @return {{x: int, y: int}[]};
+     */
+    getBody() {
+      return this.body;
+    },
+  
+    /**
+     * Отдает прошлое направление змейки.
+     */
+    getLastStepDirection() {
+      return this.lastStepDirection;
+    },
+  
+    /**
+     * Проверяет содержит ли змейка переданную точку.
+     * @see {@link https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/some|Array.prototype.some()}
+     * @param {{x: int, y: int}} point Точка, которую проверяем.
+     * @returns {boolean} true, если змейка содержит переданную точку, иначе false.
+     */
+    isOnPoint(point) {
+      return this.body.some(snakePoint => snakePoint.x === point.x && snakePoint.y === point.y);
+    },
+  
+    /**
+     * Двигает змейку на один шаг.
+     */
+    makeStep() {
+      // Записываем направление движения, которое сейчас произойдет как направление прошлого шага.
+      this.lastStepDirection = this.direction;
+      // Вставляем следующую точку в начало массива.
+      this.body.unshift(this.getNextStepHeadPoint());
+      // Удаляем последний лишний элемент.
+      this.body.pop();
+    },
+  
+    /**
+     * Добавляет в конец тела змейки копию последнего элемента змейки.
+     */
+    growUp() {
+      // Получаем индекс последней точки в массиве точек змейки (последний элемент this.body).
+      const lastBodyIdx = this.body.length - 1;
+      // Получаем последнюю точку змейки.
+      const lastBodyPoint = this.body[lastBodyIdx];
+      // Клонируем последнюю точку змейки (делаем копию).
+      const lastBodyPointClone = Object.assign({}, lastBodyPoint);
+      // Добавляем копию в наш массив this.body.
+      this.body.push(lastBodyPointClone);
+    },
+  
+    /**
+     * Отдает точку, где будет голова змейки если она сделает шаг.
+     * @returns {{x: int, y: int}} Следующая точка куда придет змейка сделав шаг.
+     */
+    getNextStepHeadPoint() {
+      // Получаем в отдельную переменную голову змейки.
+      const firstPoint = this.body[0];
+      // Возвращаем точку, где окажется голова змейки в зависимости от направления.
+      switch (this.direction) {
+        case 'up':
+          return {x: firstPoint.x, y: firstPoint.y !== 0 ? firstPoint.y - 1 : this.maxY};
+        case 'right':
+          return {x: firstPoint.x !== this.maxX ? firstPoint.x + 1 : 0, y: firstPoint.y};
+        case 'down':
+          return {x: firstPoint.x, y: firstPoint.y !== this.maxY ? firstPoint.y + 1 : 0};
+        case 'left':
+          return {x: firstPoint.x !== 0 ? firstPoint.x - 1 : this.maxX, y: firstPoint.y};
+      }
+    },
+  
+    /**
+     * Устанавливает направление змейки.
+     * @param {string} direction Направление змейки.
+     */
+    setDirection(direction) {
+      this.direction = direction;
+    },
+ }
 
  /**
  * Объект еды.
